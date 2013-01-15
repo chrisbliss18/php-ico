@@ -77,3 +77,10 @@ Since the PHP ICO library was created to generate favicon files, the following e
 	$ico_lib->save_ico( $destination );
 
 I've found that the 16x16, 24x24, 32x32, and 48x48 image sizes cover all the sizes that browsers and Windows will try to use a favicon image for. The different sizes come from using the favicon for various browser icons, bookmarks, and various other places.
+
+Thanks
+------
+
+I'd like to thank [iThemes](http://ithemes.com) for making this project possible. This code was originally developed to add easy-to-use favicon support to the [Builder theme](http://ithemes.com/purchase/builder-theme/). I asked [Cory](http://corymiller.tv/), owner of iThemes and my boss, if I could share the final code. He gave me the green light. Win for everyone. :)
+
+Thanks iThemes. Thanks Cory.
