@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2011-2013 Chris Jean
+Copyright 2011-2013 Chris Jean & iThemes
 Licensed under GPLv2 or above
 
 Version 1.0.2
