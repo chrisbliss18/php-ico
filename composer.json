@@ -1,0 +1,15 @@
+{
+    "name": "chrisbliss18/php-ico",
+    "description": "PHP ICO - The PHP ICO Generator",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Chris Jean",
+            "email": "gaarai@gaarai.com"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+    }
+}
