@@ -1,38 +1,27 @@
 <?php
 
+use Chrisbliss18\PhpIco;
+
+require_once __DIR__ . '/src/PhpIco.php';
+
 /*
 Copyright 2011-2013 Chris Jean & iThemes
 Licensed under GPLv2 or above
-
-Version 1.0.2
 */
 
+/**
+ * Class PHP_ICO
+ * This class provides a thin wrapper around Chrisbliss18/PhpIco for backwards
+ * compatibility.
+ */
 class PHP_ICO
 {
     /**
-     * Images in the BMP format.
+     * Reference to the class we are wrapping.
      *
-     * @var array
+     * @var PhpIco
      */
-    private $images = array();
-
-    /**
-     * Flag to tell if the required functions exist.
-     *
-     * @var boolean
-     */
-    private $hasRequirements = false;
-
-    /**
-     * Size of BMP image header.
-     */
-    const IMAGE_HEADER_SIZE = 40;
-
-    /**
-     * Size of icon directory entry in the BMP index.
-     */
-    const ICON_DIR_ENTRY_SIZE = 16;
-
+    private $phpIco;
 
     /**
      * Constructor - Create a new ICO generator.
@@ -51,36 +40,10 @@ class PHP_ICO
      */
     public function __construct($file = false, array $sizes = array())
     {
-        $requiredFunctions = array(
-            'getimagesize',
-            'imagecreatefromstring',
-            'imagecreatetruecolor',
-            'imagecolortransparent',
-            'imagecolorallocatealpha',
-            'imagealphablending',
-            'imagesavealpha',
-            'imagesx',
-            'imagesy',
-            'imagecopyresampled',
-        );
-
-        foreach ($requiredFunctions as $function) {
-            if (!function_exists($function)) {
-                trigger_error(
-                    "The PHP_ICO class was unable to find the $function function, which is part of the GD "
-                    . 'library. Ensure that the system has the GD library installed and that PHP has access to it '
-                    . 'through a PHP interface, such as PHP’s GD module. Since this function was not found, the '
-                    . 'library will be unable to create ICO files.'
-                );
-                return;
-            }
-        }
-
-        $this->hasRequirements = true;
-
-
-        if (false != $file) {
-            $this->add_image($file, $sizes);
+        try {
+            $this->phpIco = new PhpIco($file, $sizes);
+        } catch (\RuntimeException $e) {
+            trigger_error($e->getMessage());
         }
     }
 
@@ -107,46 +70,7 @@ class PHP_ICO
      */
     public function add_image($file, $sizes = array())
     {
-        if (!$this->hasRequirements) {
-            return false;
-        }
-
-        if (false === ($image = $this->loadImageFile($file))) {
-            return false;
-        }
-
-
-        if (empty($sizes)) {
-            $sizes = array(imagesx($image), imagesy($image));
-        }
-
-        // If just a single size was passed, put it in array.
-        if (!is_array($sizes[0])) {
-            $sizes = array($sizes);
-        }
-
-        foreach ((array)$sizes as $size) {
-            list($width, $height) = $size;
-
-            $newImage = imagecreatetruecolor($width, $height);
-
-            imagecolortransparent($newImage, imagecolorallocatealpha($newImage, 0, 0, 0, 127));
-            imagealphablending($newImage, false);
-            imagesavealpha($newImage, true);
-
-            $sourceWidth = imagesx($image);
-            $sourceHeight = imagesy($image);
-
-            $success = imagecopyresampled($newImage, $image, 0, 0, 0, 0, $width, $height, $sourceWidth, $sourceHeight);
-
-            if (false === $success) {
-                continue;
-            }
-
-            $this->addImageData($newImage);
-        }
-
-        return true;
+        return $this->phpIco->addImage($file, $sizes);
     }
 
     /**
@@ -160,164 +84,6 @@ class PHP_ICO
      */
     public function save_ico($file)
     {
-        if (!$this->hasRequirements) {
-            return false;
-        }
-
-        if (false === ($data = $this->getIcoData())) {
-            return false;
-        }
-
-        if (false === ($fh = fopen($file, 'w'))) {
-            return false;
-        }
-
-        if (false === (fwrite($fh, $data))) {
-            fclose($fh);
-            return false;
-        }
-
-        fclose($fh);
-        return true;
-    }
-
-    /**
-     * Generate final ICO data by creating a file header & adding image data.
-     */
-    private function getIcoData()
-    {
-        if (!is_array($this->images) || empty($this->images)) {
-            return false;
-        }
-
-        $data = pack('vvv', 0, 1, count($this->images));
-        $pixelData = '';
-
-        $offset = 6 + (self::ICON_DIR_ENTRY_SIZE * count($this->images));
-
-        foreach ($this->images as $image) {
-            $data .= pack(
-                'CCCCvvVV',
-                $image['width'],
-                $image['height'],
-                $image['color_palette_colors'],
-                0,
-                1,
-                $image['bits_per_pixel'],
-                $image['size'],
-                $offset
-            );
-            $pixelData .= $image['data'];
-
-            $offset += $image['size'];
-        }
-
-        $data .= $pixelData;
-        unset($pixel_data);
-        return $data;
-    }
-
-    /**
-     * Take a GD image resource and change it into a raw BMP format.
-     *
-     * The BMP data is appended to the $this->images array.
-     *
-     * @param resource $image
-     *      The GD image to be changed into BMP.
-     */
-    private function addImageData($image)
-    {
-        $width = imagesx($image);
-        $height = imagesy($image);
-
-        $pixelData = array();
-
-        $opacityData = array();
-        $currentOpacityVal = 0;
-
-        for ($y = $height - 1; $y >= 0; $y--) {
-            for ($x = 0; $x < $width; $x++) {
-                $color = imagecolorat($image, $x, $y);
-
-                $alpha = ($color & 0x7F000000) >> 24;
-                $alpha = (1 - ($alpha / 127)) * 255;
-
-                $color &= 0xFFFFFF;
-                $color |= 0xFF000000 & ($alpha << 24);
-
-                $pixelData[] = $color;
-
-
-                $opacity = ($alpha <= 127) ? 1 : 0;
-
-                $currentOpacityVal = ($currentOpacityVal << 1) | $opacity;
-
-                if ((($x + 1) % 32) == 0) {
-                    $opacityData[] = $currentOpacityVal;
-                    $currentOpacityVal = 0;
-                }
-            }
-
-            if (($x % 32) > 0) {
-                while (($x++ % 32) > 0) {
-                    $currentOpacityVal = $currentOpacityVal << 1;
-                }
-
-                $opacityData[] = $currentOpacityVal;
-                $currentOpacityVal = 0;
-            }
-        }
-
-        $colorMaskSize = $width * $height * 4;
-        $opacityMaskSize = (ceil($width / 32) * 4) * $height;
-
-        $data = pack('VVVvvVVVVVV', 40, $width, ($height * 2), 1, 32, 0, 0, 0, 0, 0, 0);
-
-        foreach ($pixelData as $color) {
-            $data .= pack('V', $color);
-        }
-
-        foreach ($opacityData as $opacity) {
-            $data .= pack('N', $opacity);
-        }
-
-        $image = array(
-            'width' => $width,
-            'height' => $height,
-            'color_palette_colors' => 0,
-            'bits_per_pixel' => 32,
-            'size' => self::IMAGE_HEADER_SIZE + $colorMaskSize + $opacityMaskSize,
-            'data' => $data,
-        );
-
-        $this->images[] = $image;
-    }
-
-    /**
-     * Read in the source image file and convert it into a GD image resource.
-     *
-     * @param string $file
-     *      Name of an image file to be loaded.
-     *
-     * @return resource
-     *      The GD image resource created from the image file.
-     */
-    private function loadImageFile($file)
-    {
-        // Run a cheap check to verify that it is an image file.
-        if (false === ($size = getimagesize($file))) {
-            return false;
-        }
-
-        if (false === ($file_data = file_get_contents($file))) {
-            return false;
-        }
-
-        if (false === ($im = imagecreatefromstring($file_data))) {
-            return false;
-        }
-
-        unset($file_data);
-        return $im;
+        return $this->phpIco->saveIco($file);
     }
 }
