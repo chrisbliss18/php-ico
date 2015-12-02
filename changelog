@@ -4,3 +4,6 @@
 	Added requirements checks.
 1.0.2 - 2013-01-07
 	Added bug fix that caused source images with transparency to have artifacts when output at the same dimensions as the source.
+1.0.3 - 2015-12-02
+    Made compatible with composer
+

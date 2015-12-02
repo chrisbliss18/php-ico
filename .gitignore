@@ -1,1 +1,4 @@
 composer.lock
+.idea
+vendor
+test/output*.ico

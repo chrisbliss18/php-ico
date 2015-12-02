@@ -1,29 +1,20 @@
 <?php
 
-namespace Chrisbliss18;
+namespace Ossobuffo\PhpIco;
 
 /*
 Copyright 2011-2013 Chris Jean & iThemes
 Licensed under GPLv2 or above
-
-Version 1.0.2
 */
 
-class PhpIco
+class IcoConverter
 {
     /**
-     * Images in the BMP format.
+     * Images in the PNG format.
      *
      * @var array
      */
-    private $images = array();
-
-    /**
-     * Flag to tell if the required functions exist.
-     *
-     * @var boolean
-     */
-    private $hasRequirements = false;
+    private $images = [];
 
     /**
      * Size of BMP image header.
@@ -34,7 +25,6 @@ class PhpIco
      * Size of icon directory entry in the BMP index.
      */
     const ICON_DIR_ENTRY_SIZE = 16;
-
 
     /**
      * Constructor - Create a new ICO generator.
@@ -50,34 +40,8 @@ class PhpIco
      *      generated ICO file. If sizes are not supplied, the size of the
      *      source image will be used.
      */
-    public function __construct($file = false, array $sizes = array())
+    public function __construct($file = false, array $sizes = [])
     {
-        $requiredFunctions = array(
-            'getimagesize',
-            'imagecreatefromstring',
-            'imagecreatetruecolor',
-            'imagecolortransparent',
-            'imagecolorallocatealpha',
-            'imagealphablending',
-            'imagesavealpha',
-            'imagesx',
-            'imagesy',
-            'imagecopyresampled',
-        );
-
-        foreach ($requiredFunctions as $function) {
-            if (!function_exists($function)) {
-                throw new \RuntimeException(
-                    'The ' . __CLASS__ . " class was unable to find the $function function, which is part of the GD "
-                    . 'library. Ensure that the system has the GD library installed and that PHP has access to it '
-                    . 'through a PHP interface, such as PHP’s GD module. Since this function was not found, the '
-                    . 'library will be unable to create ICO files.'
-                );
-            }
-        }
-
-        $this->hasRequirements = true;
-
         if (false != $file) {
             $this->addImage($file, $sizes);
         }
@@ -104,24 +68,19 @@ class PhpIco
      * @return boolean
      *      true on success and false on failure.
      */
-    public function addImage($file, $sizes = array())
+    public function addImage($file, $sizes = [])
     {
-        if (!$this->hasRequirements) {
-            return false;
-        }
-
         if (false === ($image = $this->loadImageFile($file))) {
             return false;
         }
 
-
         if (empty($sizes)) {
-            $sizes = array(imagesx($image), imagesy($image));
+            $sizes = [imagesx($image), imagesy($image)];
         }
 
         // If just a single size was passed, put it in array.
         if (!is_array($sizes[0])) {
-            $sizes = array($sizes);
+            $sizes = [$sizes];
         }
 
         foreach ((array)$sizes as $size) {
@@ -159,10 +118,6 @@ class PhpIco
      */
     public function saveIco($file)
     {
-        if (!$this->hasRequirements) {
-            return false;
-        }
-
         if (false === ($data = $this->getIcoData())) {
             return false;
         }
@@ -229,9 +184,9 @@ class PhpIco
         $width = imagesx($image);
         $height = imagesy($image);
 
-        $pixelData = array();
+        $pixelData = [];
 
-        $opacityData = array();
+        $opacityData = [];
         $currentOpacityVal = 0;
 
         for ($y = $height - 1; $y >= 0; $y--) {
@@ -280,14 +235,14 @@ class PhpIco
             $data .= pack('N', $opacity);
         }
 
-        $image = array(
+        $image = [
             'width' => $width,
             'height' => $height,
             'color_palette_colors' => 0,
             'bits_per_pixel' => 32,
             'size' => self::IMAGE_HEADER_SIZE + $colorMaskSize + $opacityMaskSize,
             'data' => $data,
-        );
+        ];
 
         $this->images[] = $image;
     }

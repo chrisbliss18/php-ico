@@ -1,22 +1,26 @@
 {
-    "name": "chrisbliss18/php-ico",
+    "name": "ossobuffo/php-ico",
     "type": "library",
-    "description": "Provides an easy-to-use PHP class that can be used to generate valid ICO files.",
-    "homepage": "http://github.com/chrisbliss18/php-ico",
+    "description": "Provides easy-to-use functionality to generate valid ICO files. Adapted from the popular PHP_ICO library.",
+    "homepage": "http://github.com/ossobuffo/php-ico",
     "license": "GPL-2.0",
     "authors": [
         {
             "name": "Chris Jean",
             "email": "gaarai@gaarai.com"
+        },
+        {
+            "name": "Daniel Johnson",
+            "email": "il.basso.buffo@gmail.com"
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4.0",
         "ext-gd": "*"
     },
     "autoload": {
         "psr-4": {
-            "Chrisbliss18\\": "src/"
+            "Ossobuffo\\PhpIco\\": "src/"
         }
     }
 }
