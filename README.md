@@ -19,41 +19,47 @@ Usage
 
 The following is a very basic example of using the PHP ICO library:
 
-	require( dirname( __FILE__ ) . '/class-php-ico.php' );
-	
-	$source = dirname( __FILE__ ) . '/example.gif';
-	$destination = dirname( __FILE__ ) . '/example.ico';
-	
-	$ico_lib = new PHP_ICO( $source );
-	$ico_lib->save_ico( $destination );
+```php
+require( dirname( __FILE__ ) . '/class-php-ico.php' );
+
+$source = dirname( __FILE__ ) . '/example.gif';
+$destination = dirname( __FILE__ ) . '/example.ico';
+
+$ico_lib = new PHP_ICO( $source );
+$ico_lib->save_ico( $destination );
+````
 
 It takes a source file named `example.gif` and produce an output ICO file named `example.ico`. `example.ico` will contain a single image that is the same size as the source image.
 
 The ICO file format is capable of holding multiple images, each of a different size. The PHP ICO library opens up this feature of the ICO format as shown in the following example:
 
-	require( dirname( __FILE__ ) . '/class-php-ico.php' );
-	
-	$source = dirname( __FILE__ ) . '/example.gif';
-	$destination = dirname( __FILE__ ) . '/example.ico';
-	
-	$ico_lib = new PHP_ICO( $source, array( array( 32, 32 ), array( 64, 64 ) ) );
-	$ico_lib->save_ico( $destination );
+```php
+require( dirname( __FILE__ ) . '/class-php-ico.php' );
+
+$source = dirname( __FILE__ ) . '/example.gif';
+$destination = dirname( __FILE__ ) . '/example.ico';
+
+$ico_lib = new PHP_ICO( $source, array( array( 32, 32 ), array( 64, 64 ) ) );
+$ico_lib->save_ico( $destination );
+```
 
 As with the previous example, this example produces `example.ico` from the `example.gif` source file. In this example, sizes were passed to the constructor that result in the `example.ico` file containing two images: one that is 32x32 and one that is 64x64. Since the same source image is used for each of the contained images, each contained image is simply the source image scaled to the new dimensions.
 
 Using different source images for the different sizes contained inside an ICO file can create much better results. For instance, you can use a high-quality image for higher-resolution images and use smaller images that are tailored for their specific dimensions for the smaller sizes. The following example shows how the PHP ICO library can be used to create such ICO files:
 
-	require( dirname( __FILE__ ) . '/class-php-ico.php' );
-	
-	$destination = dirname( __FILE__ ) . '/example.ico';
-	
-	$ico_lib = new PHP_ICO();
-	
-	$ico_lib->add_image( dirname( __FILE__ ) . '/example-small.gif', array( array( 16, 16 ), array( 24, 24 ), array( 32, 32 ) ) );
-	$ico_lib->add_image( dirname( __FILE__ ) . '/example-medium.gif', array( array( 48, 48 ), array( 96, 96 ) ) );
-	$ico_lib->add_image( dirname( __FILE__ ) . '/example-large.gif', array( array( 128, 128 ) ) );
-	
-	$ico_lib->save_ico( $destination );
+```php
+require( dirname( __FILE__ ) . '/class-php-ico.php' );
+
+$destination = dirname( __FILE__ ) . '/example.ico';
+
+$ico_lib = new PHP_ICO();
+
+$ico_lib->add_image( dirname( __FILE__ ) . '/example-small.gif', array( array( 16, 16 ), array( 24, 24 ), array( 32, 32 ) ) );
+$ico_lib->add_image( dirname( __FILE__ ) . '/example-medium.gif', array( array( 48, 48 ), array( 96, 96 ) ) );
+$ico_lib->add_image( dirname( __FILE__ ) . '/example-large.gif', array( array( 128, 128 ) ) );
+
+$ico_lib->save_ico( $destination );
+```
 
 This example creates a single ICO file named `example.ico` just as the previous examples. The difference is that this example used multiple source images to generate the final ICO images. The final ICO image contains a total of six images: 16x16, 24x24, and 32x32 images from `example-small.gif`; 48x48 and 96x96 images from `example-medium.gif`; and a 128x128 image from `example-large.gif`.
 
@@ -61,20 +67,22 @@ By using this feature of supplying multiple source images with specific sizes fo
 
 Since the PHP ICO library was created to generate favicon files, the following example shows how to generate a favicon ICO file with all the needed dimensions from a single source image:
 
-	require( dirname( __FILE__ ) . '/class-php-ico.php' );
-	
-	$source = dirname( __FILE__ ) . '/example.gif';
-	$destination = dirname( __FILE__ ) . '/example.ico';
-	
-	$sizes = array(
-		array( 16, 16 ),
-		array( 24, 24 ),
-		array( 32, 32 ),
-		array( 48, 48 ),
-	);
-	
-	$ico_lib = new PHP_ICO( $source, $sizes );
-	$ico_lib->save_ico( $destination );
+```php
+require( dirname( __FILE__ ) . '/class-php-ico.php' );
+
+$source = dirname( __FILE__ ) . '/example.gif';
+$destination = dirname( __FILE__ ) . '/example.ico';
+
+$sizes = array(
+	array( 16, 16 ),
+	array( 24, 24 ),
+	array( 32, 32 ),
+	array( 48, 48 ),
+);
+
+$ico_lib = new PHP_ICO( $source, $sizes );
+$ico_lib->save_ico( $destination );
+```
 
 I've found that the 16x16, 24x24, 32x32, and 48x48 image sizes cover all the sizes that browsers and Windows will try to use a favicon image for. The different sizes come from using the favicon for various browser icons, bookmarks, and various other places.
 
