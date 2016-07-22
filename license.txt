@@ -1,6 +1,6 @@
 PHP ICO - The PHP ICO Generator
 
-Copyright 2011-2013 Chris Jean
+Copyright 2011-2016 Chris Jean
 
 PHP ICO is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
