@@ -1,0 +1,16 @@
+{
+    "name": "vanilla/php-ico",
+    "description": "An easy-to-use library to generate valid ICO files.",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Chris Jean",
+            "homepage": "https://github.com/chrisbliss18"
+        }
+    ],
+    "autoload": {
+        "classmap": {
+            "Vanilla\\": ["class-php-ico.php"]
+        }
+    }
+}
