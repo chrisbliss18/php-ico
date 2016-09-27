@@ -5,6 +5,8 @@ PHP ICO provides an easy-to-use PHP class that generates valid [ICO files](http:
 
 The class uses the GD library for reading an image from the source file and uses pure PHP for generating the ICO file format. In theory, any image format that GD can read can be used as a source image to generate the ICO file. I tested this library with JPEG, GIF, and PNG images with great results. If an animated GIF is supplied, the first frame will be used to generate the ICO image.
 
+The PHP ICO library is available on Composer via Packagist at `chrisjean/php-ico`.
+
 ICO Format Details
 ------------------
 
