@@ -7,3 +7,5 @@
 1.0.3 - 2016-07-22
 	Updated class constructor to __construct() as PHP4-style constructors are now deprecated. Props @nuxodin.
 	Removed trailing whitespace from blank lines.
+1.0.4 - 2016-09-27
+	Updated version to get composer to track properly.

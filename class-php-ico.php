@@ -4,7 +4,7 @@
 Copyright 2011-2016 Chris Jean & iThemes
 Licensed under GPLv2 or above
 
-Version 1.0.3
+Version 1.0.4
 */
 
 class PHP_ICO {

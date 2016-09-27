@@ -1,7 +1,7 @@
 {
     "name": "chrisjean/php-ico",
     "description": "An easy-to-use library to generate valid ICO files.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "keywords": ["ico", "favicon"],
     "homepage": "https://github.com/chrisbliss18/php-ico",
     "license": "GPL-2.0+",
