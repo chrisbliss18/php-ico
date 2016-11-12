@@ -258,6 +258,9 @@ class PHP_ICO
      */
     private function _load_image_file($file)
     {
+        if (!is_string($file) || empty($file)) {
+            return false;
+        }
         // Run a cheap check to verify that it is an image file.
         if (false === ($size = getimagesize($file))) {
             return false;
