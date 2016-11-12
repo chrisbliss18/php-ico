@@ -7,7 +7,8 @@ Licensed under GPLv2 or above
 Version 1.0.4
 */
 
-class PHP_ICO {
+class PHP_ICO
+{
     /**
      * Images in the BMP format.
      *
