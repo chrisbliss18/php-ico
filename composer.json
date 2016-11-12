@@ -24,5 +24,13 @@
         "classmap": [
             "class-php-ico.php"
         ]
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^1.12"
+    },
+    "scripts": {
+        "tests" : [
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --level=psr2 class-php-ico.php --dry-run"
+        ]
     }
 }
