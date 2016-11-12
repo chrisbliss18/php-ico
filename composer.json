@@ -12,6 +12,10 @@
             "role": "Developer"
         }
     ],
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
     "support": {
         "issues": "https://github.com/chrisbliss18/php-ico/issues",
         "source": "https://github.com/chrisbliss18/php-ico"
