@@ -16,3 +16,6 @@ indent_size = 4
 
 [composer.lock]
 indent_size = 4
+
+[phpunit.xml.dist]
+indent_size = 4

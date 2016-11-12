@@ -29,12 +29,19 @@
             "class-php-ico.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PHP_ICO\\Tests\\": "tests/"
+        }
+    },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^1.12"
+        "friendsofphp/php-cs-fixer": "^1.12",
+        "phpunit/phpunit": "^5.6"
     },
     "scripts": {
         "tests" : [
-            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --level=psr2 class-php-ico.php --dry-run"
+            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --level=psr2 class-php-ico.php --dry-run",
+            "php ./vendor/phpunit/phpunit/phpunit"
         ]
     }
 }
