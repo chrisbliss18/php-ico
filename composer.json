@@ -40,8 +40,8 @@
     },
     "scripts": {
         "tests" : [
-            "php ./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --verbose --level=psr2 class-php-ico.php --dry-run",
-            "php ./vendor/phpunit/phpunit/phpunit"
+            "php-cs-fixer fix --verbose --level=psr2 class-php-ico.php --dry-run",
+            "phpunit"
         ]
     }
 }
