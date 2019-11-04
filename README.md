@@ -38,7 +38,7 @@ You can also render the gif directly on the browser without saving it on the ser
 ```php
 require( dirname( __FILE__ ) . '/class-php-ico.php' );
 
-$destination = dirname( __FILE__ ) . '/example.ico';
+$source = dirname( __FILE__ ) . '/example.gif';
 
 $ico_lib = new PHP_ICO( $source );
 $ico_lib->render_ico();
