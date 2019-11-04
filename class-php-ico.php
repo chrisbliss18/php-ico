@@ -137,6 +137,24 @@ class PHP_ICO {
 	}
 
 	/**
+	 * Display the ICO file data.
+	 *
+	 * @return boolean true on success and false on failure.
+	 */
+	function render_ico() {
+		if ( ! $this->_has_requirements )
+			return false;
+
+		if ( false === ( $data = $this->_get_ico_data() ) )
+			return false;
+
+		header('Content-Type: image/x-icon');
+		echo $data;
+
+		return true;
+	}
+
+	/**
 	 * Generate the final ICO data by creating a file header and adding the image data.
 	 *
 	 * @access private
