@@ -33,6 +33,17 @@ $ico_lib->save_ico( $destination );
 
 It takes a source file named `example.gif` and produce an output ICO file named `example.ico`. `example.ico` will contain a single image that is the same size as the source image.
 
+You can also render the gif directly on the browser without saving it on the server:
+
+```php
+require( dirname( __FILE__ ) . '/class-php-ico.php' );
+
+$destination = dirname( __FILE__ ) . '/example.ico';
+
+$ico_lib = new PHP_ICO( $source );
+$ico_lib->render_ico();
+````
+
 The ICO file format is capable of holding multiple images, each of a different size. The PHP ICO library opens up this feature of the ICO format as shown in the following example:
 
 ```php
