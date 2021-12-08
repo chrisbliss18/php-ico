@@ -6,6 +6,7 @@ Licensed under GPLv2 or above
 
 Version 1.0.4
 */
+namespace chrisjean;
 
 class PHP_ICO {
 	/**
