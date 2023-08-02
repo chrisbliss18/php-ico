@@ -140,7 +140,7 @@ class PHP_ICO {
      *
      * @return boolean true on success and false on failure.
      */
-    public function render_ico() {
+    public function render_ico():bool {
         if ( ! $this->_has_requirements )
             return false;
 
@@ -245,14 +245,14 @@ class PHP_ICO {
 			$data .= pack( 'N', $opacity );
 
 
-		$image = array(
+		$image = [
 			'width'                => $width,
 			'height'               => $height,
 			'color_palette_colors' => 0,
 			'bits_per_pixel'       => 32,
 			'size'                 => $image_header_size + $color_mask_size + $opacity_mask_size,
 			'data'                 => $data,
-		);
+		];
 
 		$this->_images[] = $image;
 	}
