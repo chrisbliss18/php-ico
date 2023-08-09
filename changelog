@@ -9,3 +9,5 @@
 	Removed trailing whitespace from blank lines.
 1.0.4 - 2016-09-27
 	Updated version to get composer to track properly.
+2.0.0 - 2023-08-02
+    Comptability PHP 8

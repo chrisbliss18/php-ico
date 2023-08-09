@@ -14,7 +14,7 @@ class PHP_ICO {
 	 * @var array
 	 * @access private
 	 */
-	var $_images = array();
+	private $_images = [];
 
 	/**
 	 * Flag to tell if the required functions exist.
@@ -22,7 +22,7 @@ class PHP_ICO {
 	 * @var boolean
 	 * @access private
 	 */
-	var $_has_requirements = false;
+	private $_has_requirements = false;
 
 
 	/**
@@ -34,8 +34,8 @@ class PHP_ICO {
 	 * @param string $file Optional. Path to the source image file.
 	 * @param array $sizes Optional. An array of sizes (each size is an array with a width and height) that the source image should be rendered at in the generated ICO file. If sizes are not supplied, the size of the source image will be used.
 	 */
-	function __construct( $file = false, $sizes = array() ) {
-		$required_functions = array(
+	public function __construct( $file = false, array $sizes = [] ) {
+		$required_functions = [
 			'getimagesize',
 			'imagecreatefromstring',
 			'imagecreatetruecolor',
@@ -45,8 +45,8 @@ class PHP_ICO {
 			'imagesavealpha',
 			'imagesx',
 			'imagesy',
-			'imagecopyresampled',
-		);
+			'imagecopyresampled'
+		];
 
 		foreach ( $required_functions as $function ) {
 			if ( ! function_exists( $function ) ) {
@@ -74,7 +74,7 @@ class PHP_ICO {
 	 * @param array $sizes Optional. An array of sizes (each size is an array with a width and height) that the source image should be rendered at in the generated ICO file. If sizes are not supplied, the size of the source image will be used.
 	 * @return boolean true on success and false on failure.
 	 */
-	function add_image( $file, $sizes = array() ) {
+	public function add_image( string $file, array $sizes = [] ):bool {
 		if ( ! $this->_has_requirements )
 			return false;
 
@@ -116,7 +116,7 @@ class PHP_ICO {
 	 * @param string $file Path to save the ICO file data into.
 	 * @return boolean true on success and false on failure.
 	 */
-	function save_ico( $file ) {
+	public function save_ico(string $file ) :bool {
 		if ( ! $this->_has_requirements )
 			return false;
 
@@ -135,13 +135,29 @@ class PHP_ICO {
 
 		return true;
 	}
+    /**
+     * Display the ICO file data.
+     *
+     * @return boolean true on success and false on failure.
+     */
+    public function render_ico():bool {
+        if ( ! $this->_has_requirements )
+            return false;
 
+        if ( false === ( $data = $this->_get_ico_data() ) )
+            return false;
+
+        header('Content-Type: image/x-icon');
+        echo $data;
+
+        return true;
+    }
 	/**
 	 * Generate the final ICO data by creating a file header and adding the image data.
 	 *
 	 * @access private
 	 */
-	function _get_ico_data() {
+	private function _get_ico_data() {
 		if ( ! is_array( $this->_images ) || empty( $this->_images ) )
 			return false;
 
@@ -172,7 +188,7 @@ class PHP_ICO {
 	 *
 	 * @access private
 	 */
-	function _add_image_data( $im ) {
+	private function _add_image_data( $im ) {
 		$width = imagesx( $im );
 		$height = imagesy( $im );
 
@@ -187,7 +203,8 @@ class PHP_ICO {
 				$color = imagecolorat( $im, $x, $y );
 
 				$alpha = ( $color & 0x7F000000 ) >> 24;
-				$alpha = ( 1 - ( $alpha / 127 ) ) * 255;
+				//$alpha = ( 1 - ( $alpha / 127 ) ) * 255;
+                $alpha = round( ( 1 - ( $alpha / 127 ) ) * 255);
 
 				$color &= 0xFFFFFF;
 				$color |= 0xFF000000 & ( $alpha << 24 );
@@ -228,14 +245,14 @@ class PHP_ICO {
 			$data .= pack( 'N', $opacity );
 
 
-		$image = array(
+		$image = [
 			'width'                => $width,
 			'height'               => $height,
 			'color_palette_colors' => 0,
 			'bits_per_pixel'       => 32,
 			'size'                 => $image_header_size + $color_mask_size + $opacity_mask_size,
 			'data'                 => $data,
-		);
+		];
 
 		$this->_images[] = $image;
 	}
@@ -245,7 +262,7 @@ class PHP_ICO {
 	 *
 	 * @access private
 	 */
-	function _load_image_file( $file ) {
+	private function _load_image_file( $file ) {
 		// Run a cheap check to verify that it is an image file.
 		if ( false === ( $size = getimagesize( $file ) ) )
 			return false;
